@@ -9,23 +9,24 @@
 #include <Wire.h>         //http://arduino.cc/en/Reference/Wire
 
 //Two 24LC256 EEPROMs on the bus
-const uint32_t totalKBytes = 64;         //for read and write test functions
-extEEPROM eep(kbits_256, 2, 64);         //device size, number of devices, page size
+const uint32_t totalKBytes = 32;         //for read and write test functions
+extEEPROM eep(kbits_256, 1, 64);         //device size, number of devices, page size
 
-const uint8_t btnStart = 6;              //start button
+// const uint8_t btnStart = 6;              //start button
 
 void setup(void)
 {
-    pinMode(btnStart, INPUT_PULLUP);
+    // pinMode(btnStart, INPUT_PULLUP);
     Serial.begin(115200);
-    uint8_t eepStatus = eep.begin(twiClock400kHz);      //go fast!
+    delay(5000);
+    uint8_t eepStatus = eep.begin(twiClock100kHz);      //go fast!
     if (eepStatus) {
         Serial << endl << F("extEEPROM.begin() failed, status = ") << eepStatus << endl;
         while (1);
     }
-    
-    Serial << endl << F("Press button to start...") << endl;
-    while (digitalRead(btnStart) == HIGH) delay(10);    //wait for button push
+    delay(1000);
+    // Serial << endl << F("Press button to start...") << endl;
+    // while (digitalRead(btnStart) == HIGH) delay(10);    //wait for button push
 
     uint8_t chunkSize = 64;    //this can be changed, but must be a multiple of 4 since we're writing 32-bit integers
 //    eeErase(chunkSize, 0, totalKBytes * 1024 - 1);
@@ -33,8 +34,8 @@ void setup(void)
     eeRead(chunkSize);
 
     dump(0, 16);            //the first 16 bytes
-    dump(32752, 32);        //across the device boundary
-    dump(65520, 16);        //the last 16 bytes
+    // dump(32752, 32);        //across the device boundary
+    // dump(65520, 16);        //the last 16 bytes
 }
 
 void loop(void)

@@ -87,6 +87,11 @@ extEEPROM::extEEPROM(eeprom_size_t deviceCapacity, byte nDevice, unsigned int pa
     }
 }
 
+bool extEEPROM::operator==(const extEEPROM& other) const
+{
+    return _eepromAddr==other._eepromAddr;
+}
+
 //initialize the I2C bus and do a dummy write (no data sent)
 //to the device so that the caller can determine whether it is responding.
 //when using a 400kHz bus speed and there are multiple I2C devices on the
@@ -186,7 +191,9 @@ byte extEEPROM::read(unsigned long addr, byte *values, unsigned int nBytes)
         rxStatus = Wire.endTransmission();
         if (rxStatus != 0) return rxStatus;        //read error
 
-        Wire.requestFrom(ctrlByte, nRead);
+        auto bytesRead=Wire.requestFrom(ctrlByte, nRead);
+        if (bytesRead!=nRead)
+            Serial.print("ALERT: eeprom read mismatch!");
         for (byte i=0; i<nRead; i++) 
         {
             values[i] = Wire.read();

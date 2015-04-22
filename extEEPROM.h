@@ -86,7 +86,7 @@ class extEEPROM
         byte write(unsigned long addr, byte value);
         byte read(unsigned long addr, byte *values, unsigned int nBytes);
         int read(unsigned long addr);
-
+        bool operator==(const extEEPROM& other) const;
     private:
         uint8_t smartSleep(uint8_t ctrlByte);
         uint8_t _eepromAddr;            //eeprom i2c address
