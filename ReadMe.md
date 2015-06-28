@@ -1,3 +1,6 @@
+# Fork notes
+I made this fork to make the library work with a slow cheap eeprom. The name of the chip is: ATMEL 313 - 24C256 
+
 # Arduino External EEPROM Library v3 #
 http://github.com/JChristensen/extEEPROM
 ReadMe file  
